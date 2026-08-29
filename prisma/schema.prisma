@@ -1,0 +1,179 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id           String          @id @default(cuid())
+  phone        String          @unique
+  email        String?         @unique
+  name         String
+  passwordHash String?
+  role         String          @default("PATIENT") // PATIENT, DOCTOR, ADMIN
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  
+  patient      PatientProfile?
+  doctor       DoctorProfile?
+}
+
+model PatientProfile {
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  neighbourhood  String   @default("Kilimani")
+  address        String   @default("Argwings Kodhek Rd, Kilimani, Nairobi")
+  lat            Float    @default(-1.2917)
+  lng            Float    @default(36.7905)
+  emergencyPhone String?
+  consentGiven   Boolean  @default(true)
+  createdAt      DateTime @default(now())
+}
+
+model DoctorProfile {
+  id                 String    @id @default(cuid())
+  userId             String    @unique
+  user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kmpdcLicenseNo     String    @unique
+  specialty          String
+  cadre              String    @default("Medical Practitioner") // Medical Practitioner, Specialist, Clinical Officer
+  verificationStatus String    @default("PENDING") // PENDING, VERIFIED, SUSPENDED, REJECTED
+  verifiedAt         DateTime?
+  isOnline           Boolean   @default(false)
+  neighbourhood      String    @default("Kilimani")
+  address            String    @default("Wood Avenue, Kilimani, Nairobi")
+  lat                Float     @default(-1.2950)
+  lng                Float     @default(36.7865)
+  rating             Float     @default(5.0)
+  totalConsults      Int       @default(0)
+  avatarUrl          String    @default("https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=300&auto=format&fit=crop&q=80")
+  bio                String    @default("Licensed practitioner registered with KMPDC.")
+  payoutMpesa        String    @default("+254 700 000 000")
+  createdAt          DateTime  @default(now())
+}
+
+model MedicalRequest {
+  id                String            @id @default(cuid())
+  patientId         String
+  patientName       String
+  patientPhone      String
+  serviceType       String            // teleconsult, home_visit, ambulance
+  symptomsSummary   String
+  symptomsTags      String            // JSON string array
+  severity          String            @default("mild") // mild, moderate, urgent
+  neighbourhood     String
+  address           String
+  lat               Float
+  lng               Float
+  estimatedPriceKES Int               @default(1000)
+  status            String            @default("matching") // matching, accepted, dispatching, in_transit, arrived, consulting, completed, cancelled
+  assignedDoctorId  String?
+  currentOfferId    String?
+  createdAt         DateTime          @default(now())
+  acceptedAt        DateTime?
+  inTransitAt       DateTime?
+  arrivedAt         DateTime?
+  consultStartedAt  DateTime?
+  consultEndedAt    DateTime?
+  paidAt            DateTime?
+  ambulanceDispatch AmbulanceDispatch?
+}
+
+model AmbulanceUnit {
+  id                 String            @id @default(cuid())
+  name               String
+  driverName         String
+  phone              String
+  registrationNo     String            @unique
+  vehicleType        String            @default("basic") // basic, advanced, icu, maternity
+  status             String            @default("available") // available, in_transit, offline, maintenance
+  verificationStatus String            @default("PENDING") // PENDING, VERIFIED, SUSPENDED
+  area               String
+  neighbourhood     String
+  lat                Float
+  lng                Float
+  etaMinutes         Int               @default(15)
+  capacity           Int               @default(2)
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+  dispatches         AmbulanceDispatch[]
+}
+
+model AmbulanceDispatch {
+  id                 String        @id @default(cuid())
+  requestId          String        @unique
+  request            MedicalRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  unitId             String
+  unit               AmbulanceUnit @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  status             String        @default("pending") // pending, assigned, en_route, arrived, completed, cancelled, declined
+  pickupAddress      String
+  dropoffAddress     String?
+  emergencyLevel     String        @default("urgent") // routine, urgent, critical
+  estimatedEtaMinutes Int          @default(15)
+  assignedAt         DateTime      @default(now())
+  acceptedAt         DateTime?
+  arrivedAt          DateTime?
+  completedAt        DateTime?
+  createdAt          DateTime      @default(now())
+}
+
+model DispatchOffer {
+  id        String   @id @default(cuid())
+  requestId String
+  doctorId  String
+  status    String   @default("pending") // pending, accepted, declined, timed_out, cancelled
+  offeredAt DateTime @default(now())
+  expiresAt DateTime
+}
+
+model ClinicalRecord {
+  id                 String   @id @default(cuid())
+  requestId          String   @unique
+  doctorId           String
+  patientId          String
+  chiefComplaint     String
+  vitalsNotes        String?
+  clinicalImpression String
+  prescriptionsJson  String   // JSON string of PrescriptionItem[]
+  referralRequired   Boolean  @default(false)
+  referralFacility   String?
+  createdAt          DateTime @default(now())
+}
+
+model Payment {
+  id                    String    @id @default(cuid())
+  requestId             String    @unique
+  amountKES             Int
+  phone                 String
+  mpesaReceiptNo        String?
+  status                String    @default("pending") // pending, completed, failed
+  doctorPayoutAmountKES Int
+  doctorPayoutStatus    String    @default("pending") // pending, paid
+  paymentDate           DateTime?
+  createdAt             DateTime  @default(now())
+}
+
+model Rating {
+  id             String   @id @default(cuid())
+  requestId      String   @unique
+  patientRating  Int      @default(5)
+  patientComment String?
+  doctorRating   Int?     @default(5)
+  createdAt      DateTime @default(now())
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String
+  actorRole  String
+  actorName  String
+  action     String
+  targetType String
+  targetId   String
+  details    String
+  timestamp  DateTime @default(now())
+}
