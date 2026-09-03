@@ -38,9 +38,9 @@ export default function HomePage() {
   };
 
   return (
-    <div className="space-y-12 pb-8">
+    <div className="space-y-9 sm:space-y-12 pb-8">
       {/* Hero Section */}
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-950 text-white p-8 md:p-14 shadow-2xl">
+      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-950 text-white p-5 sm:p-8 md:p-14 shadow-2xl">
         <div className="relative z-10 max-w-3xl space-y-6">
           <div className="inline-flex items-center gap-2 bg-emerald-700/60 border border-emerald-400/30 backdrop-blur-md px-3.5 py-1.5 rounded-full text-xs font-semibold text-emerald-200">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -57,10 +57,10 @@ export default function HomePage() {
           </p>
 
           {/* Action CTAs */}
-          <div className="flex flex-wrap gap-4 pt-2">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
             <button
               onClick={() => startService('teleconsult')}
-              className="flex items-center gap-2 bg-white text-emerald-900 px-6 py-3.5 rounded-2xl font-bold text-sm hover:bg-emerald-50 shadow-lg shadow-emerald-950/20 transition active:scale-95"
+              className="w-full sm:w-auto justify-center flex items-center gap-2 bg-white text-emerald-900 px-6 py-3.5 rounded-2xl font-bold text-sm hover:bg-emerald-50 shadow-lg shadow-emerald-950/20 transition active:scale-95"
             >
               <Video className="w-4 h-4 text-emerald-600" />
               <span>Start Instant Teleconsult</span>
@@ -69,7 +69,7 @@ export default function HomePage() {
 
             <button
               onClick={() => startService('home_visit')}
-              className="flex items-center gap-2 bg-emerald-700/80 hover:bg-emerald-600 text-white border border-emerald-500/30 px-6 py-3.5 rounded-2xl font-bold text-sm backdrop-blur-md transition active:scale-95"
+              className="w-full sm:w-auto justify-center flex items-center gap-2 bg-emerald-700/80 hover:bg-emerald-600 text-white border border-emerald-500/30 px-6 py-3.5 rounded-2xl font-bold text-sm backdrop-blur-md transition active:scale-95"
             >
               <Home className="w-4 h-4 text-emerald-300" />
               <span>Request Home Visit Doctor</span>
@@ -77,7 +77,7 @@ export default function HomePage() {
 
             <button
               onClick={() => startService('ambulance')}
-              className="flex items-center gap-2 bg-amber-500/90 hover:bg-amber-400 text-slate-950 border border-amber-300/40 px-6 py-3.5 rounded-2xl font-bold text-sm transition active:scale-95"
+              className="w-full sm:w-auto justify-center flex items-center gap-2 bg-amber-500/90 hover:bg-amber-400 text-slate-950 border border-amber-300/40 px-6 py-3.5 rounded-2xl font-bold text-sm transition active:scale-95"
             >
               <span className="text-lg leading-none">🚑</span>
               <span>Request Ambulance</span>
@@ -96,11 +96,11 @@ export default function HomePage() {
           <p className="text-xs text-slate-500">Transparent flat pricing with M-Pesa escrow protection</p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-3 gap-4 sm:gap-6 auto-rows-fr">
           {/* Teleconsult Card */}
           <div
             onClick={() => startService('teleconsult')}
-            className="group cursor-pointer bg-white rounded-3xl p-7 border-2 border-emerald-100 hover:border-emerald-500/60 shadow-card hover:shadow-elevated transition-all duration-300 relative overflow-hidden"
+            className="group cursor-pointer h-full flex flex-col bg-white rounded-3xl p-5 sm:p-7 border-2 border-emerald-100 hover:border-emerald-500/60 shadow-card hover:shadow-elevated transition-all duration-300 relative overflow-hidden"
           >
             <div className="flex items-start justify-between">
               <div className="w-14 h-14 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 group-hover:scale-105 transition">
@@ -144,7 +144,7 @@ export default function HomePage() {
               </li>
             </ul>
 
-            <div className="mt-6 flex items-center text-xs font-bold text-emerald-700 group-hover:translate-x-1 transition">
+            <div className="mt-auto pt-6 flex items-center text-xs font-bold text-emerald-700 group-hover:translate-x-1 transition">
               <span>Request Teleconsult Now</span>
               <ArrowRight className="w-4 h-4 ml-1.5" />
             </div>
@@ -153,7 +153,7 @@ export default function HomePage() {
           {/* Home Visit Card */}
           <div
             onClick={() => startService('home_visit')}
-            className="group cursor-pointer bg-white rounded-3xl p-7 border-2 border-emerald-100 hover:border-emerald-500/60 shadow-card hover:shadow-elevated transition-all duration-300 relative overflow-hidden"
+            className="group cursor-pointer h-full flex flex-col bg-white rounded-3xl p-5 sm:p-7 border-2 border-emerald-100 hover:border-emerald-500/60 shadow-card hover:shadow-elevated transition-all duration-300 relative overflow-hidden"
           >
             <div className="flex items-start justify-between">
               <div className="w-14 h-14 rounded-2xl bg-teal-50 border border-teal-200 flex items-center justify-center text-teal-700 group-hover:scale-105 transition">
@@ -197,7 +197,7 @@ export default function HomePage() {
               </li>
             </ul>
 
-            <div className="mt-6 flex items-center text-xs font-bold text-emerald-700 group-hover:translate-x-1 transition">
+            <div className="mt-auto pt-6 flex items-center text-xs font-bold text-emerald-700 group-hover:translate-x-1 transition">
               <span>Request Home Visit Doctor</span>
               <ArrowRight className="w-4 h-4 ml-1.5" />
             </div>
@@ -206,7 +206,7 @@ export default function HomePage() {
           {/* Ambulance Card */}
           <div
             onClick={() => startService('ambulance')}
-            className="group cursor-pointer bg-white rounded-3xl p-7 border-2 border-amber-100 hover:border-amber-500/60 shadow-card hover:shadow-elevated transition-all duration-300 relative overflow-hidden"
+            className="group cursor-pointer h-full flex flex-col bg-white rounded-3xl p-5 sm:p-7 border-2 border-amber-100 hover:border-amber-500/60 shadow-card hover:shadow-elevated transition-all duration-300 relative overflow-hidden"
           >
             <div className="flex items-start justify-between">
               <div className="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-700 group-hover:scale-105 transition">
@@ -250,7 +250,7 @@ export default function HomePage() {
               </li>
             </ul>
 
-            <div className="mt-6 flex items-center text-xs font-bold text-amber-700 group-hover:translate-x-1 transition">
+            <div className="mt-auto pt-6 flex items-center text-xs font-bold text-amber-700 group-hover:translate-x-1 transition">
               <span>Request Ambulance</span>
               <ArrowRight className="w-4 h-4 ml-1.5" />
             </div>
@@ -259,7 +259,7 @@ export default function HomePage() {
       </section>
 
       {/* Regulatory & Safety Foundation */}
-      <section className="bg-white rounded-3xl p-8 border border-emerald-100 shadow-sm space-y-6">
+      <section className="bg-white rounded-3xl p-5 sm:p-8 border border-emerald-100 shadow-sm space-y-6">
         <div className="text-center max-w-xl mx-auto space-y-1">
           <h3 className="text-lg font-bold text-slate-900">Kenya Regulatory Foundation</h3>
           <p className="text-xs text-slate-500">Built to comply strictly with national digital health standards</p>

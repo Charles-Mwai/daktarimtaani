@@ -183,7 +183,17 @@ export default function MatchingPage() {
           </div>
         </div>
 
-        {request.status === 'dispatching' || request.status === 'in_transit' || request.status === 'arrived' || request.status === 'completed' ? (
+        {request.status === 'matching' || (request.status === 'dispatching' && !ambulanceDispatch?.acceptedAt) ? (
+          <div className="border border-amber-200 rounded-2xl p-4 sm:p-5 flex items-start gap-3 bg-amber-50">
+            <div className="shrink-0 animate-spin">
+              <div className="w-7 h-7 rounded-full border-4 border-amber-400 border-t-transparent" />
+            </div>
+            <div>
+              <p className="font-bold text-slate-900">Waiting for ambulance provider to confirm</p>
+              <p className="text-xs text-slate-500 mt-1">The nearest available ambulance crew has been notified. Confirmation typically takes under 2 minutes.</p>
+            </div>
+          </div>
+        ) : request.status === 'dispatching' || request.status === 'in_transit' || request.status === 'arrived' || request.status === 'completed' ? (
           <div className={`border rounded-2xl p-4 sm:p-5 flex items-start gap-3 ${request.status === 'arrived' || request.status === 'completed' ? 'bg-emerald-50 border-emerald-200' : 'bg-amber-50 border-amber-200'}`}>
             <div className={`shrink-0 ${request.status === 'arrived' || request.status === 'completed' ? 'text-emerald-600' : 'text-amber-600'}`}>
               {request.status === 'completed' ? (
@@ -210,6 +220,7 @@ export default function MatchingPage() {
           doctorName={ambulanceUnit?.name ?? 'Ambulance Unit'}
           isSimulatingMovement={true}
           arrived={ambulanceReached}
+          mode="ambulance"
         />
 
         <div className="bg-white rounded-2xl p-4 sm:p-6 border border-amber-100 shadow-sm space-y-4">
@@ -260,6 +271,12 @@ export default function MatchingPage() {
               <span className="block text-slate-400 font-medium">Pickup</span>
               <span className="font-bold text-slate-900">{request.address}</span>
             </div>
+            {ambulanceDispatch?.dropoffAddress && (
+              <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 col-span-full">
+                <span className="block text-slate-400 font-medium">Drop-off Destination</span>
+                <span className="font-bold text-slate-900">{ambulanceDispatch.dropoffAddress}</span>
+              </div>
+            )}
           </div>
 
           <div className="bg-slate-50 rounded-xl p-3.5 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">

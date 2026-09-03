@@ -23,15 +23,15 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-screen flex flex-col bg-[#f8faf8] font-sans antialiased text-slate-800">
+      <body className="min-h-screen flex flex-col overflow-x-hidden bg-[#f8faf8] font-sans antialiased text-slate-800">
         <Navbar />
-        <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6">
           {children}
         </main>
         <footer className="bg-white border-t border-emerald-100 py-8 mt-12 text-slate-500 text-xs">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="flex items-center gap-2">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
                 <div className="w-6 h-6 rounded-lg bg-emerald-600 flex items-center justify-center text-white text-[11px] font-bold">
                   DM
                 </div>
@@ -39,18 +39,18 @@ export default function RootLayout({
                 <span className="text-slate-300">|</span>
                 <span>KMPDC E-Health Registered Virtual Facility</span>
               </div>
-              <div className="flex items-center gap-4 text-slate-400">
+              <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-slate-400">
                 <span>Data Protection Act 2019 (ODPC Certified)</span>
                 <span>•</span>
                 <span>Lipa na M-Pesa Integrated</span>
               </div>
             </div>
 
-            <div className="pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3 text-[11px] text-slate-400">
+            <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row flex-wrap items-center justify-between gap-3 text-center sm:text-left text-[11px] text-slate-400">
               <div>
                 © {new Date().getFullYear()} Daktari Mtaani Kenya. All rights reserved.
               </div>
-              <div className="flex items-center gap-4">
+              <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
                 <a href="/doctor/login" className="hover:text-emerald-700 hover:underline">
                   Doctor Login
                 </a>

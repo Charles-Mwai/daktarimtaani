@@ -23,6 +23,7 @@ function PatientRequestContent() {
   const [serviceType, setServiceType] = useState<ServiceType>(initialService);
   const [selectedLocation, setSelectedLocation] = useState(NAIROBI_NEIGHBOURHOODS[0]);
   const [customAddress, setCustomAddress] = useState('');
+  const [dropoffAddress, setDropoffAddress] = useState('');
   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
   const [symptomsSummary, setSymptomsSummary] = useState('');
   const [severity, setSeverity] = useState<'mild' | 'moderate' | 'urgent'>('mild');
@@ -73,6 +74,7 @@ function PatientRequestContent() {
               : serviceType === 'ambulance'
               ? PRICING.ambulance.basePriceKES
               : PRICING.teleconsult.basePriceKES,
+          dropoffAddress: serviceType === 'ambulance' ? (dropoffAddress.trim() || null) : undefined,
         }),
       });
 
@@ -94,7 +96,7 @@ function PatientRequestContent() {
   const priceConfig = PRICING[serviceType];
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6 px-2 sm:px-0">
+    <div className="max-w-3xl mx-auto space-y-5 sm:space-y-6">
       {/* Header */}
       <div className="space-y-1">
         <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
@@ -105,17 +107,17 @@ function PatientRequestContent() {
         </p>
       </div>
 
-      <form onSubmit={handleCreateRequest} className="space-y-6">
+      <form onSubmit={handleCreateRequest} className="space-y-5 sm:space-y-6">
         {/* 1. Care Mode Selection */}
         <div className="bg-white rounded-2xl p-4 sm:p-5 border border-emerald-100 shadow-sm space-y-3">
           <label className="text-xs font-bold uppercase tracking-wider text-slate-700 block">
             1. Select Care Type
           </label>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 auto-rows-fr">
             <button
               type="button"
               onClick={() => setServiceType('teleconsult')}
-              className={`p-3 sm:p-4 rounded-xl border-2 text-left transition flex flex-col justify-between ${
+              className={`min-h-[142px] p-3 sm:p-4 rounded-xl border-2 text-left transition flex flex-col ${
                 serviceType === 'teleconsult'
                   ? 'border-emerald-600 bg-emerald-50/70 shadow-sm ring-1 ring-emerald-400'
                   : 'border-slate-200 hover:border-slate-300 bg-white'
@@ -127,7 +129,7 @@ function PatientRequestContent() {
                 </div>
                 <span className="text-sm font-extrabold text-slate-900">{formatKES(PRICING.teleconsult.basePriceKES)}</span>
               </div>
-              <div>
+              <div className="mt-auto">
                 <h4 className="font-bold text-sm text-slate-900">Teleconsultation</h4>
                 <p className="text-[11px] text-slate-500 mt-0.5">Instant in-browser video call ({PRICING.teleconsult.targetSLA})</p>
               </div>
@@ -136,7 +138,7 @@ function PatientRequestContent() {
             <button
               type="button"
               onClick={() => setServiceType('home_visit')}
-              className={`p-3 sm:p-4 rounded-xl border-2 text-left transition flex flex-col justify-between ${
+              className={`min-h-[142px] p-3 sm:p-4 rounded-xl border-2 text-left transition flex flex-col ${
                 serviceType === 'home_visit'
                   ? 'border-emerald-600 bg-emerald-50/70 shadow-sm ring-1 ring-emerald-400'
                   : 'border-slate-200 hover:border-slate-300 bg-white'
@@ -148,7 +150,7 @@ function PatientRequestContent() {
                 </div>
                 <span className="text-sm font-extrabold text-slate-900">{formatKES(PRICING.home_visit.basePriceKES)}</span>
               </div>
-              <div>
+              <div className="mt-auto">
                 <h4 className="font-bold text-sm text-slate-900">Home Visit</h4>
                 <p className="text-[11px] text-slate-500 mt-0.5">Doctor arrives at your address ({PRICING.home_visit.targetSLA})</p>
               </div>
@@ -157,7 +159,7 @@ function PatientRequestContent() {
             <button
               type="button"
               onClick={() => setServiceType('ambulance')}
-              className={`p-3 sm:p-4 rounded-xl border-2 text-left transition flex flex-col justify-between ${
+              className={`min-h-[142px] p-3 sm:p-4 rounded-xl border-2 text-left transition flex flex-col ${
                 serviceType === 'ambulance'
                   ? 'border-amber-600 bg-amber-50/70 shadow-sm ring-1 ring-amber-400'
                   : 'border-slate-200 hover:border-slate-300 bg-white'
@@ -169,7 +171,7 @@ function PatientRequestContent() {
                 </div>
                 <span className="text-sm font-extrabold text-slate-900">{formatKES(PRICING.ambulance.basePriceKES)}</span>
               </div>
-              <div>
+              <div className="mt-auto">
                 <h4 className="font-bold text-sm text-slate-900">Ambulance</h4>
                 <p className="text-[11px] text-slate-500 mt-0.5">Patient transfer to clinic or hospital ({PRICING.ambulance.targetSLA})</p>
               </div>
@@ -178,8 +180,8 @@ function PatientRequestContent() {
         </div>
 
         {/* 2. Structured Triage & Symptoms */}
-        <div className="bg-white rounded-2xl p-5 border border-emerald-100 shadow-sm space-y-4">
-          <div className="flex items-center justify-between">
+        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-emerald-100 shadow-sm space-y-4">
+          <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
             <label className="text-xs font-bold uppercase tracking-wider text-slate-700 block">
               2. Clinical Triage & Symptoms
             </label>
@@ -227,11 +229,11 @@ function PatientRequestContent() {
             <label className="block text-xs font-semibold text-slate-600 mb-1.5">
               Urgency Assessment:
             </label>
-            <div className="grid grid-cols-3 gap-2 text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
               <button
                 type="button"
                 onClick={() => setSeverity('mild')}
-                className={`py-2 px-3 rounded-xl font-semibold border transition text-center ${
+                className={`min-h-11 py-2 px-3 rounded-xl font-semibold border transition text-center ${
                   severity === 'mild'
                     ? 'bg-emerald-100 border-emerald-500 text-emerald-900 ring-1 ring-emerald-500'
                     : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
@@ -243,7 +245,7 @@ function PatientRequestContent() {
               <button
                 type="button"
                 onClick={() => setSeverity('moderate')}
-                className={`py-2 px-3 rounded-xl font-semibold border transition text-center ${
+                className={`min-h-11 py-2 px-3 rounded-xl font-semibold border transition text-center ${
                   severity === 'moderate'
                     ? 'bg-amber-100 border-amber-500 text-amber-900 ring-1 ring-amber-500'
                     : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
@@ -255,7 +257,7 @@ function PatientRequestContent() {
               <button
                 type="button"
                 onClick={() => setSeverity('urgent')}
-                className={`py-2 px-3 rounded-xl font-semibold border transition text-center ${
+                className={`min-h-11 py-2 px-3 rounded-xl font-semibold border transition text-center ${
                   severity === 'urgent'
                     ? 'bg-rose-100 border-rose-500 text-rose-900 ring-1 ring-rose-500'
                     : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
@@ -268,12 +270,12 @@ function PatientRequestContent() {
         </div>
 
         {/* 3. Location Picker */}
-        <div className="bg-white rounded-2xl p-5 border border-emerald-100 shadow-sm space-y-4">
+        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-emerald-100 shadow-sm space-y-4">
           <label className="text-xs font-bold uppercase tracking-wider text-slate-700 block">
             3. Patient Location (Nairobi Pilot Area)
           </label>
 
-          <div className="grid sm:grid-cols-2 gap-2.5">
+          <div className="grid sm:grid-cols-2 gap-2.5 auto-rows-fr">
             {NAIROBI_NEIGHBOURHOODS.map((loc, idx) => {
               const isSelected = selectedLocation.neighbourhood === loc.neighbourhood;
               return (
@@ -281,7 +283,7 @@ function PatientRequestContent() {
                   type="button"
                   key={idx}
                   onClick={() => setSelectedLocation(loc)}
-                  className={`p-3 rounded-xl border text-left text-xs transition flex items-start gap-2 ${
+                  className={`h-full p-3 rounded-xl border text-left text-xs transition flex items-start gap-2 ${
                     isSelected
                       ? 'border-emerald-600 bg-emerald-50/60 font-semibold text-emerald-950 ring-1 ring-emerald-500'
                       : 'border-slate-200 hover:border-slate-300 text-slate-700 bg-slate-50/50'
@@ -309,29 +311,61 @@ function PatientRequestContent() {
               className="w-full text-xs md:text-sm p-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-slate-800"
             />
           </div>
+
+          {/* Ambulance-only: dropoff destination */}
+          {serviceType === 'ambulance' && (
+            <div className="border-t border-amber-100 pt-3">
+              <label className="block text-xs font-semibold text-slate-600 mb-1">
+                Drop-off Destination (optional):
+              </label>
+              <input
+                type="text"
+                value={dropoffAddress}
+                onChange={(e) => setDropoffAddress(e.target.value)}
+                placeholder="e.g. Aga Khan Hospital, 3rd Parklands Ave"
+                className="w-full text-xs md:text-sm p-3 rounded-xl border border-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-slate-800 bg-amber-50/30"
+              />
+              <p className="text-[11px] text-slate-500 mt-1">Leave blank if you have not yet decided on a receiving facility.</p>
+            </div>
+          )}
         </div>
 
         {/* Price & Guarantee Summary */}
-        <div className="bg-emerald-900 text-white rounded-2xl p-5 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="space-y-1">
+        <div className="bg-emerald-900 text-white rounded-2xl p-4 sm:p-5 shadow-lg flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="w-full space-y-1 text-center sm:text-left">
             <div className="flex items-center gap-2 text-emerald-300 text-xs font-bold uppercase tracking-wider">
               <ShieldCheck className="w-4 h-4" />
               <span>M-Pesa Escrow Protection</span>
             </div>
             <p className="text-xs text-emerald-100">
-              Total consultation fee: <strong className="text-lg text-white font-extrabold">{formatKES(priceConfig.basePriceKES)}</strong>
+              {serviceType === 'ambulance' ? 'Emergency response fee: ' : 'Total consultation fee: '}
+              <strong className="text-lg text-white font-extrabold">{formatKES(priceConfig.basePriceKES)}</strong>
             </p>
             <p className="text-[11px] text-emerald-200/80">
-              Target response: {priceConfig.targetSLA} • Verified KMPDC Practitioner
+              {serviceType === 'ambulance'
+                ? `Target response: ${priceConfig.targetSLA} • Verified Emergency Response Fleet`
+                : `Target response: ${priceConfig.targetSLA} • Verified KMPDC Practitioner`}
             </p>
           </div>
 
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full sm:w-auto flex items-center justify-center gap-2 bg-emerald-400 hover:bg-emerald-300 text-emerald-950 px-8 py-3.5 rounded-xl font-extrabold text-sm shadow-md transition active:scale-95 cursor-pointer"
+            className={`w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-extrabold text-sm shadow-md transition active:scale-95 cursor-pointer ${
+              serviceType === 'ambulance'
+                ? 'bg-amber-400 hover:bg-amber-300 text-slate-950'
+                : 'bg-emerald-400 hover:bg-emerald-300 text-emerald-950'
+            }`}
           >
-            <span>{isSubmitting ? 'Matching Doctor...' : 'Request Doctor Now'}</span>
+            <span>
+              {isSubmitting
+                ? serviceType === 'ambulance'
+                  ? 'Dispatching Ambulance...'
+                  : 'Matching Doctor...'
+                : serviceType === 'ambulance'
+                ? 'Request Ambulance'
+                : 'Request Doctor Now'}
+            </span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>

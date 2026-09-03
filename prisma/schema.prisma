@@ -83,42 +83,71 @@ model MedicalRequest {
   ambulanceDispatch AmbulanceDispatch?
 }
 
+model AmbulanceProvider {
+  id                 String          @id @default(cuid())
+  name               String
+  contactPhone       String          @unique
+  contactEmail       String?
+  passwordHash       String?
+  licenseNo          String?
+  verificationStatus String          @default("PENDING") // PENDING, VERIFIED, SUSPENDED
+  verifiedAt         DateTime?
+  serviceArea        String          @default("Nairobi")
+  logoUrl            String?
+  payoutMpesa        String?
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+  units              AmbulanceUnit[]
+}
+
 model AmbulanceUnit {
-  id                 String            @id @default(cuid())
+  id                 String             @id @default(cuid())
   name               String
   driverName         String
+  driverPhone        String?
   phone              String
-  registrationNo     String            @unique
-  vehicleType        String            @default("basic") // basic, advanced, icu, maternity
-  status             String            @default("available") // available, in_transit, offline, maintenance
-  verificationStatus String            @default("PENDING") // PENDING, VERIFIED, SUSPENDED
+  registrationNo     String             @unique
+  vehicleType        String             @default("basic") // basic, advanced, icu, maternity
+  status             String             @default("available") // available, in_transit, offline, maintenance
+  verificationStatus String             @default("PENDING") // PENDING, VERIFIED, SUSPENDED
+  isOnline           Boolean            @default(true)
   area               String
-  neighbourhood     String
+  neighbourhood      String
   lat                Float
   lng                Float
-  etaMinutes         Int               @default(15)
-  capacity           Int               @default(2)
-  createdAt          DateTime          @default(now())
-  updatedAt          DateTime          @updatedAt
+  etaMinutes         Int                @default(15)
+  capacity           Int                @default(2)
+  providerId         String?
+  provider           AmbulanceProvider? @relation(fields: [providerId], references: [id])
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
   dispatches         AmbulanceDispatch[]
 }
 
 model AmbulanceDispatch {
-  id                 String        @id @default(cuid())
-  requestId          String        @unique
-  request            MedicalRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
-  unitId             String
-  unit               AmbulanceUnit @relation(fields: [unitId], references: [id], onDelete: Cascade)
-  status             String        @default("pending") // pending, assigned, en_route, arrived, completed, cancelled, declined
-  pickupAddress      String
-  dropoffAddress     String?
-  emergencyLevel     String        @default("urgent") // routine, urgent, critical
-  estimatedEtaMinutes Int          @default(15)
-  assignedAt         DateTime      @default(now())
-  acceptedAt         DateTime?
-  arrivedAt          DateTime?
-  completedAt        DateTime?
-  createdAt          DateTime      @default(now())
+  id                      String        @id @default(cuid())
+  requestId               String        @unique
+  request                 MedicalRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  unitId                  String
+  unit                    AmbulanceUnit @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  status                  String        @default("pending") // pending, assigned, en_route, arrived, completed, cancelled, declined
+  pickupAddress           String
+  dropoffAddress          String?
+  emergencyLevel          String        @default("urgent") // routine, urgent, critical
+  estimatedEtaMinutes     Int           @default(15)
+  // Offer lifecycle
+  offeredAt               DateTime?
+  offerExpiresAt          DateTime?
+  declinedAt              DateTime?
+  // Progress timestamps
+  assignedAt              DateTime      @default(now())
+  acceptedAt              DateTime?
+  arrivedAt               DateTime?
+  completedAt             DateTime?
+  // Payout
+  ambulancePayoutKES      Int           @default(0)
+  ambulancePayoutStatus   String        @default("pending") // pending, paid
+  createdAt               DateTime      @default(now())
 }
 
 model DispatchOffer {

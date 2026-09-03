@@ -7,11 +7,12 @@ const JWT_SECRET = process.env.JWT_SECRET || 'daktari-mtaani-secret-key-pilot-20
 
 export interface AuthSession {
   userId: string;
-  role: 'PATIENT' | 'DOCTOR' | 'ADMIN';
+  role: 'PATIENT' | 'DOCTOR' | 'ADMIN' | 'AMBULANCE';
   phone: string;
   name: string;
   doctorId?: string;
   patientId?: string;
+  ambulanceProviderId?: string;
 }
 
 /** Each portal gets its own isolated cookie so logging in as a doctor
@@ -20,6 +21,7 @@ export const ROLE_COOKIE: Record<string, string> = {
   PATIENT: 'daktari_patient_session',
   DOCTOR: 'daktari_doctor_session',
   ADMIN: 'daktari_admin_session',
+  AMBULANCE: 'daktari_ambulance_session',
 };
 
 export function hashPassword(password: string): string {
@@ -43,8 +45,8 @@ export function verifyToken(token: string): AuthSession | null {
 }
 
 /** Read the session for the active portal based on which cookie is set.
- *  Checks PATIENT → DOCTOR → ADMIN in order and returns the first valid session. */
-export async function getCurrentSession(role?: 'PATIENT' | 'DOCTOR' | 'ADMIN'): Promise<AuthSession | null> {
+ *  Checks PATIENT → DOCTOR → ADMIN → AMBULANCE in order and returns the first valid session. */
+export async function getCurrentSession(role?: 'PATIENT' | 'DOCTOR' | 'ADMIN' | 'AMBULANCE'): Promise<AuthSession | null> {
   const cookieStore = cookies();
 
   if (role) {
@@ -54,7 +56,7 @@ export async function getCurrentSession(role?: 'PATIENT' | 'DOCTOR' | 'ADMIN'): 
     return verifyToken(token);
   }
 
-  // Auto-detect: check all three role cookies and return whichever is set
+  // Auto-detect: check all four role cookies and return whichever is set
   for (const cookieName of Object.values(ROLE_COOKIE)) {
     const token = cookieStore.get(cookieName)?.value;
     if (token) {

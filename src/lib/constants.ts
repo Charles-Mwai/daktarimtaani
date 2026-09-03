@@ -2,6 +2,24 @@ import { DoctorProfile, LocationCoordinates, PatientProfile } from './types';
 
 export const NAIROBI_NEIGHBOURHOODS: LocationCoordinates[] = [
   {
+    neighbourhood: 'Ruaka Town / Two Rivers',
+    address: 'Limuru Road, Ruaka / Two Rivers Mall, Nairobi',
+    lat: -1.2055,
+    lng: 36.7785,
+  },
+  {
+    neighbourhood: 'Ruaka — Banana Hill / Ndenderu',
+    address: 'Banana Raini Rd, Ndenderu, Kiambu / Nairobi Environs',
+    lat: -1.1890,
+    lng: 36.7610,
+  },
+  {
+    neighbourhood: 'Rosslyn / Runda Environs',
+    address: 'Limuru Rd, Rosslyn Riviera, Nairobi',
+    lat: -1.2215,
+    lng: 36.7972,
+  },
+  {
     neighbourhood: 'Kilimani / Hurlingham',
     address: 'Argwings Kodhek Rd, Kilimani, Nairobi',
     lat: -1.2917,
@@ -153,10 +171,18 @@ export const PRICING = {
 export const COMMON_SYMPTOMS = [
   { id: 'fever', label: 'High Fever & Chills', severity: 'moderate' as const, category: 'General' },
   { id: 'respiratory', label: 'Cough, Flu & Sore Throat', severity: 'mild' as const, category: 'Respiratory' },
-  { id: 'stomach', label: 'Severe Stomach Pain / Diarrhea', severity: 'moderate' as const, category: 'Digestive' },
-  { id: 'headache', label: 'Persistent Migraine / Headache', severity: 'mild' as const, category: 'Neurological' },
-  { id: 'pediatric', label: 'Child Illness / Pediatric Triage', severity: 'moderate' as const, category: 'Pediatric' },
-  { id: 'rash', label: 'Skin Rash or Allergic Flare', severity: 'mild' as const, category: 'Dermatology' },
+  { id: 'chest_pain', label: 'Chest Tightness / Shortness of Breath', severity: 'urgent' as const, category: 'Cardiovascular' },
+  { id: 'breathing', label: 'Acute Asthma / Wheezing Difficulty', severity: 'urgent' as const, category: 'Respiratory' },
+  { id: 'stomach', label: 'Severe Stomach Pain / Vomiting / Diarrhea', severity: 'moderate' as const, category: 'Digestive' },
+  { id: 'headache', label: 'Persistent Migraine / Sudden Severe Headache', severity: 'mild' as const, category: 'Neurological' },
+  { id: 'dizziness', label: 'Dizziness, Fainting or Syncope', severity: 'moderate' as const, category: 'Neurological' },
+  { id: 'pediatric', label: 'Child High Fever / Dehydration Triage', severity: 'moderate' as const, category: 'Pediatric' },
+  { id: 'rash', label: 'Skin Rash, Hives or Allergic Flare', severity: 'mild' as const, category: 'Dermatology' },
+  { id: 'anaphylaxis', label: 'Severe Allergic Reaction / Facial Swelling', severity: 'urgent' as const, category: 'Immunology' },
+  { id: 'uti', label: 'Painful Urination / Pelvic Discomfort', severity: 'mild' as const, category: 'Urology' },
+  { id: 'pregnancy', label: 'Pregnancy Pain / Labor Contractions', severity: 'urgent' as const, category: 'Maternal' },
   { id: 'hypertension', label: 'Blood Pressure Check / Medication Refill', severity: 'mild' as const, category: 'Chronic' },
-  { id: 'injury', label: 'Sprain, Minor Cut or Wound Care', severity: 'urgent' as const, category: 'Trauma' },
+  { id: 'diabetes', label: 'High Blood Sugar / Diabetic Malaise', severity: 'moderate' as const, category: 'Endocrine' },
+  { id: 'injury', label: 'Sprain, Fracture, Deep Cut or Trauma', severity: 'urgent' as const, category: 'Trauma' },
+  { id: 'burns', label: 'Thermal Burns / Chemical Scald', severity: 'urgent' as const, category: 'Trauma' },
 ];

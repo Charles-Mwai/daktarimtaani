@@ -11,6 +11,7 @@ interface MapTrackerProps {
   doctorName?: string;
   isSimulatingMovement?: boolean;
   arrived?: boolean;
+  mode?: 'doctor' | 'ambulance';
 }
 
 export default function MapTracker({
@@ -19,6 +20,7 @@ export default function MapTracker({
   doctorName = 'Dr. Kamau',
   isSimulatingMovement = true,
   arrived = false,
+  mode = 'doctor',
 }: MapTrackerProps) {
   // Current interpolated doctor coordinates for the ride-hailing style animation
   const [currentDocPos, setCurrentDocPos] = useState({
@@ -69,20 +71,28 @@ export default function MapTracker({
   const docX = getPercentX(currentDocPos.lng);
   const docY = getPercentY(currentDocPos.lat);
 
+  const isAmbulance = mode === 'ambulance';
+  const pingColor = isAmbulance ? 'bg-amber-400' : 'bg-emerald-400';
+  const pinBg = isAmbulance ? 'bg-amber-600' : 'bg-emerald-600';
+  const labelBg = isAmbulance ? 'bg-amber-800 border-amber-600' : 'bg-emerald-800 border-emerald-600';
+  const headerColor = isAmbulance ? 'text-amber-700' : 'text-emerald-700';
+  const routeColor = isAmbulance ? '#d97706' : '#059669';
+  const navBg = isAmbulance ? 'bg-amber-600 shadow-amber-600/20' : 'bg-emerald-600 shadow-emerald-600/20';
+
   return (
     <div className="relative w-full h-64 sm:h-80 md:h-96 bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 shadow-inner flex flex-col">
       {/* Top Floating ETA Card */}
       <div className="absolute top-4 left-4 right-4 z-20 flex flex-wrap items-center justify-between gap-2 bg-white/90 backdrop-blur-md p-3.5 rounded-xl border border-emerald-100 shadow-lg">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white font-bold shadow-md shadow-emerald-600/20">
+          <div className={`w-10 h-10 rounded-xl ${navBg} flex items-center justify-center text-white font-bold shadow-md`}>
             <Navigation className="w-5 h-5 animate-pulse" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-emerald-700">
-                Doctor Dispatched
+              <span className={`text-xs font-bold uppercase tracking-wider ${headerColor}`}>
+                {isAmbulance ? 'Ambulance Dispatched' : 'Doctor Dispatched'}
               </span>
-              <span className="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full">
+              <span className={`${isAmbulance ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'} text-[10px] font-bold px-2 py-0.5 rounded-full`}>
                 Live GPS
               </span>
             </div>
@@ -95,8 +105,8 @@ export default function MapTracker({
         <div className="flex items-center gap-4 text-right">
           <div>
             <span className="text-[11px] text-slate-400 block font-medium">Estimated Arrival</span>
-            <span className="text-lg font-extrabold text-emerald-700 flex items-center gap-1 justify-end">
-              <Clock className="w-4 h-4 text-emerald-600" />
+            <span className={`text-lg font-extrabold ${headerColor} flex items-center gap-1 justify-end`}>
+              <Clock className="w-4 h-4" />
               {arrived ? 'Arrived' : `${currentETA} mins`}
             </span>
           </div>
@@ -123,14 +133,14 @@ export default function MapTracker({
           <path d="M 300 0 Q 320 250 200 400" stroke="#94a3b8" strokeWidth="5" fill="none" />
         </svg>
 
-        {/* Route Line connecting Doctor to Patient */}
+        {/* Route Line connecting Doctor/Ambulance to Patient */}
         <svg className="absolute inset-0 w-full h-full z-10 pointer-events-none">
           <line
             x1={`${docX}%`}
             y1={`${docY}%`}
             x2={`${patientX}%`}
             y2={`${patientY}%`}
-            stroke="#059669"
+            stroke={routeColor}
             strokeWidth="3"
             strokeDasharray="6 6"
             className="animate-pulse"
@@ -151,19 +161,19 @@ export default function MapTracker({
           </div>
         </div>
 
-        {/* Moving Doctor Location Pin */}
+        {/* Moving Doctor / Ambulance Location Pin */}
         <div
           className="absolute z-10 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center transition-all duration-1000 ease-linear"
           style={{ left: `${docX}%`, top: `${docY}%` }}
         >
-          <div className="bg-emerald-800 text-white text-[11px] font-bold px-2.5 py-1 rounded-md shadow-md mb-1 whitespace-nowrap border border-emerald-600 flex items-center gap-1">
-            <Stethoscope className="w-3 h-3 text-emerald-300" />
+          <div className={`${labelBg} text-white text-[11px] font-bold px-2.5 py-1 rounded-md shadow-md mb-1 whitespace-nowrap border flex items-center gap-1`}>
+            {isAmbulance ? <span>🚑</span> : <Stethoscope className="w-3 h-3 text-emerald-300" />}
             <span>{doctorName}</span>
           </div>
           <div className="relative flex items-center justify-center">
-            <span className="animate-ping absolute inline-flex h-8 w-8 rounded-full bg-emerald-400 opacity-75"></span>
-            <div className="w-7 h-7 rounded-full bg-emerald-600 border-2 border-white shadow-xl flex items-center justify-center text-white text-xs">
-              🩺
+            <span className={`animate-ping absolute inline-flex h-8 w-8 rounded-full ${pingColor} opacity-75`}></span>
+            <div className={`w-7 h-7 rounded-full ${pinBg} border-2 border-white shadow-xl flex items-center justify-center text-white text-xs`}>
+              {isAmbulance ? '🚑' : '🩺'}
             </div>
           </div>
         </div>
@@ -171,9 +181,13 @@ export default function MapTracker({
 
       {/* Bottom Safety & Dispatch Trust Badge */}
       <div className="bg-white px-4 py-2.5 border-t border-slate-200 flex items-center justify-between text-xs text-slate-600">
-        <div className="flex items-center gap-1.5 text-emerald-800 font-medium">
-          <ShieldCheck className="w-4 h-4 text-emerald-600" />
-          <span>KMPDC Licensed Practitioner • Official Medical Kit & ID Card Verified</span>
+        <div className="flex items-center gap-1.5 font-medium">
+          <ShieldCheck className={`w-4 h-4 ${isAmbulance ? 'text-amber-600' : 'text-emerald-600'}`} />
+          <span>
+            {isAmbulance
+              ? 'Verified Emergency Response Fleet • Official Emergency ID Verified'
+              : 'KMPDC Licensed Practitioner • Official Medical Kit & ID Card Verified'}
+          </span>
         </div>
         <span className="text-[11px] text-slate-400 hidden sm:inline">
           Live GPS updates every 2s

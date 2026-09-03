@@ -71,6 +71,7 @@ export async function POST(req: NextRequest) {
       lat,
       lng,
       estimatedPriceKES,
+      dropoffAddress,
     } = body;
 
     const request = await prisma.medicalRequest.create({
@@ -96,6 +97,7 @@ export async function POST(req: NextRequest) {
         where: {
           verificationStatus: 'VERIFIED',
           status: 'available',
+          isOnline: true,
         },
       });
 
@@ -111,15 +113,22 @@ export async function POST(req: NextRequest) {
           .sort((a, b) => a.dist - b.dist);
 
         const selectedUnit = ranked[0].unit;
+        const now = new Date();
+        const offerExpires = new Date(now.getTime() + 120_000);
+        const payoutKES = Math.round((estimatedPriceKES || 4200) * 0.8);
+
         const dispatch = await prisma.ambulanceDispatch.create({
           data: {
             requestId: request.id,
             unitId: selectedUnit.id,
-            status: 'assigned',
+            status: 'pending',
             pickupAddress: address || request.address,
-            dropoffAddress: address || request.address,
+            dropoffAddress: dropoffAddress || null,
             emergencyLevel: severity === 'urgent' || severity === 'moderate' ? 'urgent' : 'routine',
             estimatedEtaMinutes: Math.max(5, Number(selectedUnit.etaMinutes || 15)),
+            offeredAt: now,
+            offerExpiresAt: offerExpires,
+            ambulancePayoutKES: payoutKES,
           },
         });
 
@@ -131,20 +140,15 @@ export async function POST(req: NextRequest) {
           },
         });
 
-        await prisma.ambulanceUnit.update({
-          where: { id: selectedUnit.id },
-          data: { status: 'in_transit', etaMinutes: Math.max(5, Number(selectedUnit.etaMinutes || 15)) },
-        });
-
         await prisma.auditLog.create({
           data: {
             actorId: 'system-dispatch',
             actorRole: 'SYSTEM',
             actorName: 'Dispatch Engine',
-            action: 'AMBULANCE_DISPATCH_ASSIGNED',
+            action: 'AMBULANCE_OFFER_SENT',
             targetType: 'REQUEST',
             targetId: request.id,
-            details: `Assigned ambulance ${selectedUnit.name} (${selectedUnit.registrationNo}) to request ${request.id}. ETA ${Math.max(5, Number(selectedUnit.etaMinutes || 15))} min.`,
+            details: `Sent 120s dispatch offer to ${selectedUnit.name} (${selectedUnit.registrationNo}) for request ${request.id}. ETA ${Math.max(5, Number(selectedUnit.etaMinutes || 15))} min. Payout KES ${payoutKES}.`,
           },
         });
       } else {
@@ -156,7 +160,7 @@ export async function POST(req: NextRequest) {
             action: 'AMBULANCE_DISPATCH_NO_UNIT',
             targetType: 'REQUEST',
             targetId: request.id,
-            details: `No verified ambulance unit available for request ${request.id} in ${request.neighbourhood}.`,
+            details: `No verified online ambulance unit available for request ${request.id} in ${request.neighbourhood}.`,
           },
         });
       }
