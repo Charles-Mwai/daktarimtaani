@@ -1,0 +1,23 @@
+/* Add to globals.css (or merge into your existing :root block).
+   These sit alongside your existing --color-green-deep etc. if you'd
+   rather keep both palettes available — canopy/leaf/murram are just
+   slightly more muted, earthier versions tuned for this page. */
+
+:root {
+  --color-canopy: #16442C;   /* deep green — dominant, replaces a bright hero accent */
+  --color-leaf: #3C7A56;     /* mid green — secondary accent, route line, checkmarks */
+  --color-murram: #C97A3D;   /* muted terracotta — sparing use only (ambulance strip, one dot) */
+  --color-ink: #201C16;      /* warm near-black, not pure #111 */
+  --color-paper: #F7F8F4;    /* your existing paper tone works fine here too */
+}
+
+/* If you're on Tailwind v4 with @theme inline (as in the main web app),
+   add matching lines there: */
+@theme inline {
+  --color-canopy: var(--color-canopy);
+  --color-leaf: var(--color-leaf);
+  --color-murram: var(--color-murram);
+}
+
+/* If you're on a tailwind.config.js/ts instead, add to theme.extend.colors:
+   canopy: '#16442C', leaf: '#3C7A56', murram: '#C97A3D' */

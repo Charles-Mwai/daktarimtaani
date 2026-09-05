@@ -3,6 +3,14 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-canopy: #16442C;   /* deep green — dominant, replaces a bright hero accent */
+  --color-leaf: #3C7A56;     /* mid green — secondary accent, route line, checkmarks */
+  --color-murram: #C97A3D;   /* muted terracotta — sparing use only (ambulance strip, one dot) */
+  --color-ink: #201C16;      /* warm near-black, not pure #111 */
+  --color-paper: #F7F8F4;    /* warm off-white for backgrounds */
+}
+
 @layer base {
   body {
     @apply bg-slate-50 text-slate-800 antialiased selection:bg-brand-100 selection:text-brand-900;

@@ -141,7 +141,7 @@ export default function DoctorConsolePage() {
     }
   };
 
-  const updateRequestStatus = async (requestId: string, status: 'arrived' | 'consulting') => {
+  const updateRequestStatus = async (requestId: string, status: 'arrived' | 'consulting' | 'completed') => {
     try {
       await fetch(`/api/requests/${requestId}`, {
         method: 'PATCH',
@@ -382,13 +382,24 @@ export default function DoctorConsolePage() {
 
                 <div className="flex flex-wrap items-center gap-2">
                   {req.serviceType === 'teleconsult' ? (
-                    <button
-                      onClick={() => router.push(`/patient/consult/${req.id}/room`)}
-                      className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-bold shadow transition"
-                    >
-                      <Video className="w-4 h-4" />
-                      <span>Join Video Call</span>
-                    </button>
+                    <>
+                      <button
+                        onClick={() => router.push(`/doctor/consult/${req.id}/room`)}
+                        className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-bold shadow transition"
+                      >
+                        <Video className="w-4 h-4" />
+                        <span>Join Video Call</span>
+                      </button>
+                      {req.status === 'consulting' && (
+                        <button
+                          onClick={() => updateRequestStatus(req.id, 'completed')}
+                          className="flex items-center gap-1.5 bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-xl text-xs font-bold shadow transition"
+                        >
+                          <CheckCircle2 className="w-4 h-4" />
+                          <span>End Video Consult</span>
+                        </button>
+                      )}
+                    </>
                   ) : (
                     <>
                       <button

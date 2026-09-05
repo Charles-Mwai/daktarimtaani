@@ -8,6 +8,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        canopy: 'var(--color-canopy)',
+        leaf: 'var(--color-leaf)',
+        murram: 'var(--color-murram)',
+        ink: 'var(--color-ink)',
+        paper: 'var(--color-paper)',
         brand: {
           50: '#f0fdf4',
           100: '#dcfce7',
@@ -40,7 +45,8 @@ module.exports = {
         }
       },
       fontFamily: {
-        sans: ['Plus Jakarta Sans', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        display: ['Fraunces', 'serif'],
+        sans: ['Inter', 'Plus Jakarta Sans', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
       },
       boxShadow: {
         'soft': '0 4px 20px -2px rgba(22, 163, 74, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04)',

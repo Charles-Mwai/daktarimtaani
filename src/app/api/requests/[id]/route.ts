@@ -104,6 +104,30 @@ export async function PATCH(
       return NextResponse.json({ error: 'Request not found' }, { status: 404 });
     }
 
+    if (requestedStatus === 'completed') {
+      const request = await prisma.medicalRequest.update({
+        where: { id: params.id },
+        data: {
+          status: 'completed',
+          consultEndedAt: existing.consultEndedAt ?? new Date(),
+        },
+      });
+
+      await prisma.auditLog.create({
+        data: {
+          actorId: existing.assignedDoctorId ?? existing.patientId,
+          actorRole: 'DOCTOR',
+          actorName: 'Attending Doctor',
+          action: 'CONSULT_ENDED',
+          targetType: 'REQUEST',
+          targetId: request.id,
+          details: `Teleconsultation ended for request ${request.id}.`,
+        },
+      });
+
+      return NextResponse.json({ success: true, request });
+    }
+
     // Handle lifecycle transitions (doctor-driven)
     if (requestedStatus in LIFECYCLE_STATUSES) {
       const transition = LIFECYCLE_STATUSES[requestedStatus];

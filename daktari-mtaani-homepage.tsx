@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 
 /**
@@ -163,20 +165,20 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-paper text-ink">
       {/* ---------------- Header ---------------- */}
-      <header className="flex flex-wrap items-center justify-between gap-y-3 px-4 sm:px-6 md:px-10 py-5 border-b border-black/[0.06]">
+      <header className="flex items-center justify-between px-6 md:px-10 py-5 border-b border-black/[0.06]">
         <div className="flex items-baseline gap-2">
           <span className="font-display font-bold text-[22px] text-canopy">
             Daktari Mtaani
           </span>
           <span className="w-[7px] h-[7px] rounded-full bg-murram mb-[3px]" />
         </div>
-        <nav className="flex items-center gap-3 sm:gap-6 text-sm">
-          <Link href="/patient/records" className="text-ink/70 hover:text-canopy">
+        <nav className="flex items-center gap-6 text-sm">
+          <Link href="/records" className="text-ink/70 hover:text-canopy">
             My medical records
           </Link>
           <Link
-            href="/patient/request"
-            className="min-h-11 bg-canopy text-white font-medium px-4 py-2.5 rounded-lg hover:bg-leaf transition-colors"
+            href="/request"
+            className="bg-canopy text-white font-medium px-4 py-2.5 rounded-lg hover:bg-leaf transition-colors"
           >
             Request a doctor
           </Link>
@@ -184,9 +186,9 @@ export default function HomePage() {
       </header>
 
       {/* ---------------- Hero ---------------- */}
-      <section className="px-4 sm:px-6 md:px-10 pt-10 sm:pt-14 pb-14 sm:pb-20 max-w-6xl mx-auto grid lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-14 items-center">
+      <section className="px-6 md:px-10 pt-14 pb-20 max-w-6xl mx-auto grid md:grid-cols-[1.05fr_0.95fr] gap-14 items-center">
         <div>
-          <h1 className="font-display font-bold text-[2.15rem] sm:text-[2.6rem] lg:text-[3.4rem] leading-[1.05] text-canopy text-balance">
+          <h1 className="font-display font-bold text-[2.6rem] md:text-[3.4rem] leading-[1.05] text-canopy text-balance">
             A doctor, requested like a ride.
           </h1>
           <p className="mt-6 text-[17px] leading-relaxed text-ink/75 max-w-md">
@@ -194,16 +196,16 @@ export default function HomePage() {
             under five minutes, or have one sent to wherever you are.
           </p>
 
-          <div className="mt-8 flex flex-col sm:flex-row flex-wrap gap-3">
+          <div className="mt-8 flex flex-wrap gap-3">
             <Link
-              href="/patient/request?service=teleconsult"
-              className="min-h-11 bg-canopy text-white text-center font-medium px-6 py-3.5 rounded-xl hover:bg-leaf transition-colors"
+              href="/request/teleconsult"
+              className="bg-canopy text-white font-medium px-6 py-3.5 rounded-xl hover:bg-leaf transition-colors"
             >
               Start a video consult
             </Link>
             <Link
-              href="/patient/request?service=home_visit"
-              className="min-h-11 border border-black/10 bg-white text-canopy text-center font-medium px-6 py-3.5 rounded-xl hover:border-canopy/40 transition-colors"
+              href="/request/home-visit"
+              className="border border-black/10 bg-white text-canopy font-medium px-6 py-3.5 rounded-xl hover:border-canopy/40 transition-colors"
             >
               Request a home visit
             </Link>
@@ -215,7 +217,7 @@ export default function HomePage() {
           </p>
         </div>
 
-        <div className="relative w-full max-w-xl mx-auto lg:max-w-none">
+        <div className="relative">
           <RouteMapArt />
           <p className="mt-3 text-xs text-ink/45 text-center">
             Dr. Achieng, en route to Kilimani — a real dispatch, tracked live
@@ -224,7 +226,7 @@ export default function HomePage() {
       </section>
 
       {/* ---------------- Two ways to be seen ---------------- */}
-      <section className="px-4 sm:px-6 md:px-10 py-12 sm:py-16 max-w-6xl mx-auto">
+      <section className="px-6 md:px-10 py-16 max-w-6xl mx-auto">
         <h2 className="font-display font-bold text-2xl md:text-[1.85rem] text-canopy">
           Two ways to be seen
         </h2>
@@ -233,9 +235,9 @@ export default function HomePage() {
           M-Pesa.
         </p>
 
-        <div className="mt-9 grid lg:grid-cols-[1.15fr_1fr] gap-6">
+        <div className="mt-9 grid md:grid-cols-[1.15fr_1fr] gap-6">
           {/* Teleconsult — primary */}
-          <div className="bg-canopy text-white rounded-2xl p-6 sm:p-8 flex flex-col">
+          <div className="bg-canopy text-white rounded-2xl p-8 flex flex-col">
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium text-white/70">
                 Under 5 minutes
@@ -253,21 +255,21 @@ export default function HomePage() {
             </p>
             <ul className="mt-6 space-y-2.5 flex-1">
               <li className="flex items-start gap-2.5">
-                <svg viewBox="0 0 20 20" className="w-[18px] h-[18px] mt-0.5 shrink-0 text-leaf" fill="none">
+                <svg viewBox="0 0 20 20" className="w-[18px] h-[18px] mt-0.5 shrink-0 text-amber-soft" fill="none">
                   <circle cx="10" cy="10" r="9" stroke="currentColor" strokeWidth="1.4" />
                   <path d="M6.2 10.3l2.4 2.4 5.2-5.4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
                 <span className="text-[15px] leading-snug text-white/85">Encrypted video call, right in your browser</span>
               </li>
               <li className="flex items-start gap-2.5">
-                <svg viewBox="0 0 20 20" className="w-[18px] h-[18px] mt-0.5 shrink-0 text-leaf" fill="none">
+                <svg viewBox="0 0 20 20" className="w-[18px] h-[18px] mt-0.5 shrink-0 text-amber-soft" fill="none">
                   <circle cx="10" cy="10" r="9" stroke="currentColor" strokeWidth="1.4" />
                   <path d="M6.2 10.3l2.4 2.4 5.2-5.4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
                 <span className="text-[15px] leading-snug text-white/85">Digital prescription and referral note included</span>
               </li>
               <li className="flex items-start gap-2.5">
-                <svg viewBox="0 0 20 20" className="w-[18px] h-[18px] mt-0.5 shrink-0 text-leaf" fill="none">
+                <svg viewBox="0 0 20 20" className="w-[18px] h-[18px] mt-0.5 shrink-0 text-amber-soft" fill="none">
                   <circle cx="10" cy="10" r="9" stroke="currentColor" strokeWidth="1.4" />
                   <path d="M6.2 10.3l2.4 2.4 5.2-5.4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
@@ -275,7 +277,7 @@ export default function HomePage() {
               </li>
             </ul>
             <Link
-              href="/patient/request?service=teleconsult"
+              href="/request/teleconsult"
               className="mt-7 bg-white text-canopy text-center font-semibold py-3 rounded-xl hover:bg-white/90 transition-colors"
             >
               Start instant teleconsult
@@ -283,7 +285,7 @@ export default function HomePage() {
           </div>
 
           {/* Home visit — secondary */}
-          <div className="bg-white border border-black/[0.08] rounded-2xl p-6 sm:p-8 flex flex-col">
+          <div className="bg-white border border-black/[0.08] rounded-2xl p-8 flex flex-col">
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium text-ink/55">
                 Under 45 minutes
@@ -305,7 +307,7 @@ export default function HomePage() {
               <CheckRow>Wound care, injections, and urgent paediatric checks</CheckRow>
             </ul>
             <Link
-              href="/patient/request?service=home_visit"
+              href="/request/home-visit"
               className="mt-7 border border-canopy text-canopy text-center font-semibold py-3 rounded-xl hover:bg-canopy hover:text-white transition-colors"
             >
               Request a home visit
@@ -314,7 +316,7 @@ export default function HomePage() {
         </div>
 
         {/* Ambulance — urgent strip, not a third card */}
-        <div className="mt-6 rounded-2xl bg-murram/10 border border-murram/25 px-5 sm:px-7 py-5 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+        <div className="mt-6 rounded-2xl bg-murram/10 border border-murram/25 px-7 py-5 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
           <div className="flex items-center gap-3.5">
             <svg viewBox="0 0 40 40" className="w-9 h-9 shrink-0 text-murram" fill="none">
               <rect x="4" y="14" width="24" height="14" rx="2.5" stroke="currentColor" strokeWidth="2" />
@@ -333,8 +335,8 @@ export default function HomePage() {
             </div>
           </div>
           <Link
-            href="/patient/request?service=ambulance"
-            className="min-h-11 sm:ml-auto shrink-0 bg-murram text-white font-semibold px-5 py-2.5 rounded-lg text-sm hover:bg-murram/90 transition-colors text-center"
+            href="/request/ambulance"
+            className="sm:ml-auto shrink-0 bg-murram text-white font-semibold px-5 py-2.5 rounded-lg text-sm hover:bg-murram/90 transition-colors text-center"
           >
             Request an ambulance
           </Link>
@@ -342,13 +344,13 @@ export default function HomePage() {
       </section>
 
       {/* ---------------- Trust ---------------- */}
-      <section className="px-4 sm:px-6 md:px-10 py-12 sm:py-16 bg-canopy/[0.04]">
+      <section className="px-6 md:px-10 py-16 bg-canopy/[0.04]">
         <div className="max-w-6xl mx-auto">
           <h2 className="font-display font-bold text-2xl text-canopy max-w-md">
             Why you can trust who shows up
           </h2>
 
-          <div className="mt-9 grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+          <div className="mt-9 grid md:grid-cols-3 gap-10">
             <div>
               <svg viewBox="0 0 32 32" className="w-7 h-7 text-leaf mb-3" fill="none">
                 <path d="M16 3l11 5v7c0 7.5-4.7 12.9-11 15-6.3-2.1-11-7.5-11-15V8l11-5z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
@@ -388,7 +390,7 @@ export default function HomePage() {
       </section>
 
       {/* ---------------- Footer ---------------- */}
-      <footer className="px-4 sm:px-6 md:px-10 pt-12 sm:pt-14 pb-8 max-w-6xl mx-auto">
+      <footer className="px-6 md:px-10 pt-14 pb-8 max-w-6xl mx-auto">
         <div className="grid sm:grid-cols-[1.4fr_1fr_1fr] gap-10">
           <div>
             <div className="flex items-baseline gap-2">

@@ -2,6 +2,7 @@
 
 import React, { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import {
   Video,
   Home,
@@ -96,287 +97,296 @@ function PatientRequestContent() {
   const priceConfig = PRICING[serviceType];
 
   return (
-    <div className="max-w-3xl mx-auto space-y-5 sm:space-y-6">
+    <div className="min-h-screen bg-paper">
       {/* Header */}
-      <div className="space-y-1">
-        <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
-          Request Medical Consultation
-        </h1>
-        <p className="text-xs md:text-sm text-slate-500">
-          Complete the quick clinical triage below to get matched with a verified doctor.
-        </p>
-      </div>
+      <header className="flex flex-wrap items-center justify-between gap-y-3 px-4 sm:px-6 md:px-10 py-5 border-b border-black/[0.06]">
+        <Link href="/" className="flex items-baseline gap-2">
+          <span className="font-display font-bold text-[22px] text-canopy">
+            Daktari Mtaani
+          </span>
+          <span className="w-[7px] h-[7px] rounded-full bg-murram mb-[3px]" />
+        </Link>
+        <nav className="flex items-center gap-3 sm:gap-6 text-sm">
+          <Link href="/patient/records" className="text-ink/70 hover:text-canopy">
+            My records
+          </Link>
+        </nav>
+      </header>
 
-      <form onSubmit={handleCreateRequest} className="space-y-5 sm:space-y-6">
-        {/* 1. Care Mode Selection */}
-        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-emerald-100 shadow-sm space-y-3">
-          <label className="text-xs font-bold uppercase tracking-wider text-slate-700 block">
-            1. Select Care Type
-          </label>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 auto-rows-fr">
-            <button
-              type="button"
-              onClick={() => setServiceType('teleconsult')}
-              className={`min-h-[142px] p-3 sm:p-4 rounded-xl border-2 text-left transition flex flex-col ${
-                serviceType === 'teleconsult'
-                  ? 'border-emerald-600 bg-emerald-50/70 shadow-sm ring-1 ring-emerald-400'
-                  : 'border-slate-200 hover:border-slate-300 bg-white'
-              }`}
-            >
-              <div className="flex items-center justify-between mb-2">
-                <div className={`p-2 rounded-lg ${serviceType === 'teleconsult' ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-600'}`}>
-                  <Video className="w-5 h-5" />
-                </div>
-                <span className="text-sm font-extrabold text-slate-900">{formatKES(PRICING.teleconsult.basePriceKES)}</span>
-              </div>
-              <div className="mt-auto">
-                <h4 className="font-bold text-sm text-slate-900">Teleconsultation</h4>
-                <p className="text-[11px] text-slate-500 mt-0.5">Instant in-browser video call ({PRICING.teleconsult.targetSLA})</p>
-              </div>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setServiceType('home_visit')}
-              className={`min-h-[142px] p-3 sm:p-4 rounded-xl border-2 text-left transition flex flex-col ${
-                serviceType === 'home_visit'
-                  ? 'border-emerald-600 bg-emerald-50/70 shadow-sm ring-1 ring-emerald-400'
-                  : 'border-slate-200 hover:border-slate-300 bg-white'
-              }`}
-            >
-              <div className="flex items-center justify-between mb-2">
-                <div className={`p-2 rounded-lg ${serviceType === 'home_visit' ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-600'}`}>
-                  <Home className="w-5 h-5" />
-                </div>
-                <span className="text-sm font-extrabold text-slate-900">{formatKES(PRICING.home_visit.basePriceKES)}</span>
-              </div>
-              <div className="mt-auto">
-                <h4 className="font-bold text-sm text-slate-900">Home Visit</h4>
-                <p className="text-[11px] text-slate-500 mt-0.5">Doctor arrives at your address ({PRICING.home_visit.targetSLA})</p>
-              </div>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setServiceType('ambulance')}
-              className={`min-h-[142px] p-3 sm:p-4 rounded-xl border-2 text-left transition flex flex-col ${
-                serviceType === 'ambulance'
-                  ? 'border-amber-600 bg-amber-50/70 shadow-sm ring-1 ring-amber-400'
-                  : 'border-slate-200 hover:border-slate-300 bg-white'
-              }`}
-            >
-              <div className="flex items-center justify-between mb-2">
-                <div className={`p-2 rounded-lg ${serviceType === 'ambulance' ? 'bg-amber-500 text-white' : 'bg-slate-100 text-slate-600'}`}>
-                  <Car className="w-5 h-5" />
-                </div>
-                <span className="text-sm font-extrabold text-slate-900">{formatKES(PRICING.ambulance.basePriceKES)}</span>
-              </div>
-              <div className="mt-auto">
-                <h4 className="font-bold text-sm text-slate-900">Ambulance</h4>
-                <p className="text-[11px] text-slate-500 mt-0.5">Patient transfer to clinic or hospital ({PRICING.ambulance.targetSLA})</p>
-              </div>
-            </button>
-          </div>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-10 py-8 sm:py-12 space-y-8">
+        {/* Page Title */}
+        <div className="space-y-2">
+          <h1 className="font-display font-bold text-[1.85rem] sm:text-[2rem] md:text-[2.5rem] text-canopy leading-[1.1]">
+            Request a doctor
+          </h1>
+          <p className="text-[17px] text-ink/75 max-w-lg leading-relaxed">
+            Tell us what you need and where you are. We'll match you with a verified KMPDC doctor.
+          </p>
         </div>
 
-        {/* 2. Structured Triage & Symptoms */}
-        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-emerald-100 shadow-sm space-y-4">
-          <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-            <label className="text-xs font-bold uppercase tracking-wider text-slate-700 block">
-              2. Clinical Triage & Symptoms
+        <form onSubmit={handleCreateRequest} className="space-y-6">
+          {/* 1. Care Mode Selection */}
+          <div className="space-y-3">
+            <label className="text-sm font-semibold text-canopy">
+              What do you need?
             </label>
-            <span className="text-[11px] text-emerald-700 font-medium">Select all that apply</span>
-          </div>
-
-          {/* Quick Symptom Chips */}
-          <div className="flex flex-wrap gap-2">
-            {COMMON_SYMPTOMS.map((sym) => {
-              const isSelected = selectedSymptoms.includes(sym.label);
-              return (
-                <button
-                  type="button"
-                  key={sym.id}
-                  onClick={() => toggleSymptom(sym.label)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 border ${
-                    isSelected
-                      ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm'
-                      : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
-                  }`}
-                >
-                  {isSelected && <Check className="w-3.5 h-3.5" />}
-                  <span>{sym.label}</span>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Detailed Symptoms Textarea */}
-          <div>
-            <label className="block text-xs font-semibold text-slate-600 mb-1">
-              Describe what you are feeling in your own words:
-            </label>
-            <textarea
-              rows={3}
-              value={symptomsSummary}
-              onChange={(e) => setSymptomsSummary(e.target.value)}
-              placeholder="e.g. Mild headache and fatigue for 2 days, took paracetamol but fever persists at 38°C..."
-              className="w-full text-xs md:text-sm p-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-slate-800"
-            />
-          </div>
-
-          {/* Severity selector */}
-          <div className="pt-2 border-t border-slate-100">
-            <label className="block text-xs font-semibold text-slate-600 mb-1.5">
-              Urgency Assessment:
-            </label>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               <button
                 type="button"
-                onClick={() => setSeverity('mild')}
-                className={`min-h-11 py-2 px-3 rounded-xl font-semibold border transition text-center ${
-                  severity === 'mild'
-                    ? 'bg-emerald-100 border-emerald-500 text-emerald-900 ring-1 ring-emerald-500'
-                    : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
+                onClick={() => setServiceType('teleconsult')}
+                className={`min-h-36 p-5 sm:p-6 rounded-2xl border-2 text-left transition flex flex-col ${
+                  serviceType === 'teleconsult'
+                    ? 'border-leaf bg-canopy/5 shadow-sm'
+                    : 'border-black/10 hover:border-black/20 bg-white'
                 }`}
               >
-                Mild / Non-Urgent
+                <div className="flex items-center justify-between mb-3">
+                  <div className={`p-2.5 rounded-lg ${serviceType === 'teleconsult' ? 'bg-leaf text-white' : 'bg-ink/5 text-ink/60'}`}>
+                    <Video className="w-5 h-5" />
+                  </div>
+                  <span className="font-display font-bold text-lg text-canopy">{formatKES(PRICING.teleconsult.basePriceKES)}</span>
+                </div>
+                <h4 className="font-semibold text-ink mt-auto">Video call</h4>
+                <p className="text-[13px] text-ink/60 mt-1">{PRICING.teleconsult.targetSLA}</p>
               </button>
 
               <button
                 type="button"
-                onClick={() => setSeverity('moderate')}
-                className={`min-h-11 py-2 px-3 rounded-xl font-semibold border transition text-center ${
-                  severity === 'moderate'
-                    ? 'bg-amber-100 border-amber-500 text-amber-900 ring-1 ring-amber-500'
-                    : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
+                onClick={() => setServiceType('home_visit')}
+                className={`p-6 rounded-2xl border-2 text-left transition flex flex-col ${
+                  serviceType === 'home_visit'
+                    ? 'border-leaf bg-canopy/5 shadow-sm'
+                    : 'border-black/10 hover:border-black/20 bg-white'
                 }`}
               >
-                Moderate Discomfort
+                <div className="flex items-center justify-between mb-3">
+                  <div className={`p-2.5 rounded-lg ${serviceType === 'home_visit' ? 'bg-leaf text-white' : 'bg-ink/5 text-ink/60'}`}>
+                    <Home className="w-5 h-5" />
+                  </div>
+                  <span className="font-display font-bold text-lg text-canopy">{formatKES(PRICING.home_visit.basePriceKES)}</span>
+                </div>
+                <h4 className="font-semibold text-ink mt-auto">Home visit</h4>
+                <p className="text-[13px] text-ink/60 mt-1">{PRICING.home_visit.targetSLA}</p>
               </button>
 
               <button
                 type="button"
-                onClick={() => setSeverity('urgent')}
-                className={`min-h-11 py-2 px-3 rounded-xl font-semibold border transition text-center ${
-                  severity === 'urgent'
-                    ? 'bg-rose-100 border-rose-500 text-rose-900 ring-1 ring-rose-500'
-                    : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
+                onClick={() => setServiceType('ambulance')}
+                className={`p-6 rounded-2xl border-2 text-left transition flex flex-col ${
+                  serviceType === 'ambulance'
+                    ? 'border-murram bg-murram/10 shadow-sm'
+                    : 'border-black/10 hover:border-black/20 bg-white'
                 }`}
               >
-                Urgent Attention
+                <div className="flex items-center justify-between mb-3">
+                  <div className={`p-2.5 rounded-lg ${serviceType === 'ambulance' ? 'bg-murram text-white' : 'bg-ink/5 text-ink/60'}`}>
+                    <Car className="w-5 h-5" />
+                  </div>
+                  <span className="font-display font-bold text-lg text-murram">{formatKES(PRICING.ambulance.basePriceKES)}</span>
+                </div>
+                <h4 className="font-semibold text-ink mt-auto">Ambulance</h4>
+                <p className="text-[13px] text-ink/60 mt-1">{PRICING.ambulance.targetSLA}</p>
               </button>
             </div>
           </div>
-        </div>
 
-        {/* 3. Location Picker */}
-        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-emerald-100 shadow-sm space-y-4">
-          <label className="text-xs font-bold uppercase tracking-wider text-slate-700 block">
-            3. Patient Location (Nairobi Pilot Area)
-          </label>
+          {/* 2. Symptoms */}
+          <div className="space-y-3 pt-4 border-t border-black/10">
+            <label className="text-sm font-semibold text-canopy">
+              What's bothering you? (Select all that apply)
+            </label>
+            <div className="flex flex-wrap gap-2">
+              {COMMON_SYMPTOMS.map((sym) => {
+                const isSelected = selectedSymptoms.includes(sym.label);
+                return (
+                  <button
+                    type="button"
+                    key={sym.id}
+                    onClick={() => toggleSymptom(sym.label)}
+                    className={`px-3.5 py-2 rounded-lg text-sm font-medium transition border ${
+                      isSelected
+                        ? 'bg-leaf text-white border-leaf shadow-sm'
+                        : 'bg-white text-ink border-black/10 hover:border-black/20'
+                    }`}
+                  >
+                    {isSelected && <Check className="w-3.5 h-3.5 inline mr-1" />}
+                    {sym.label}
+                  </button>
+                );
+              })}
+            </div>
 
-          <div className="grid sm:grid-cols-2 gap-2.5 auto-rows-fr">
-            {NAIROBI_NEIGHBOURHOODS.map((loc, idx) => {
-              const isSelected = selectedLocation.neighbourhood === loc.neighbourhood;
-              return (
+            {/* Detailed Symptoms Textarea */}
+            <div>
+              <label className="block text-sm font-medium text-ink/75 mb-2">
+                Describe in your own words:
+              </label>
+              <textarea
+                rows={3}
+                value={symptomsSummary}
+                onChange={(e) => setSymptomsSummary(e.target.value)}
+                placeholder="e.g. Mild headache and fatigue for 2 days, fever at 38°C..."
+                className="w-full text-sm p-4 rounded-xl border border-black/10 focus:outline-none focus:ring-2 focus:ring-leaf focus:border-leaf text-ink placeholder-ink/40 bg-white"
+              />
+            </div>
+
+            {/* Urgency selector */}
+            <div className="space-y-2 pt-2">
+              <label className="block text-sm font-medium text-ink/75">
+                How urgent?
+              </label>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                 <button
                   type="button"
-                  key={idx}
-                  onClick={() => setSelectedLocation(loc)}
-                  className={`h-full p-3 rounded-xl border text-left text-xs transition flex items-start gap-2 ${
-                    isSelected
-                      ? 'border-emerald-600 bg-emerald-50/60 font-semibold text-emerald-950 ring-1 ring-emerald-500'
-                      : 'border-slate-200 hover:border-slate-300 text-slate-700 bg-slate-50/50'
+                  onClick={() => setSeverity('mild')}
+                    className={`min-h-11 py-3 px-3 rounded-lg font-medium text-sm transition border ${
+                    severity === 'mild'
+                      ? 'bg-leaf/10 border-leaf text-leaf'
+                      : 'bg-white border-black/10 text-ink/70 hover:border-black/20'
                   }`}
                 >
-                  <MapPin className={`w-4 h-4 shrink-0 mt-0.5 ${isSelected ? 'text-emerald-600' : 'text-slate-400'}`} />
-                  <div>
-                    <div className="font-bold">{loc.neighbourhood}</div>
-                    <div className="text-[11px] text-slate-500 font-normal">{loc.address}</div>
-                  </div>
+                  Mild
                 </button>
-              );
-            })}
+                <button
+                  type="button"
+                  onClick={() => setSeverity('moderate')}
+                    className={`min-h-11 py-3 px-3 rounded-lg font-medium text-sm transition border ${
+                    severity === 'moderate'
+                      ? 'bg-murram/10 border-murram text-murram'
+                      : 'bg-white border-black/10 text-ink/70 hover:border-black/20'
+                  }`}
+                >
+                  Moderate
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSeverity('urgent')}
+                    className={`min-h-11 py-3 px-3 rounded-lg font-medium text-sm transition border ${
+                    severity === 'urgent'
+                      ? 'bg-murram/20 border-murram text-canopy'
+                      : 'bg-white border-black/10 text-ink/70 hover:border-black/20'
+                  }`}
+                >
+                  Urgent
+                </button>
+              </div>
+            </div>
           </div>
 
-          <div>
-            <label className="block text-xs font-semibold text-slate-600 mb-1">
-              Building, House / Apt Number or Landmark:
+          {/* 3. Location Picker */}
+          <div className="space-y-3 pt-4 border-t border-black/10">
+            <label className="text-sm font-semibold text-canopy">
+              Where are you? (Nairobi Pilot Area)
             </label>
-            <input
-              type="text"
-              value={customAddress}
-              onChange={(e) => setCustomAddress(e.target.value)}
-              placeholder="e.g. Green Valley Apts, Block B, Flat 4"
-              className="w-full text-xs md:text-sm p-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-slate-800"
-            />
-          </div>
+            <div className="grid sm:grid-cols-2 gap-2">
+              {NAIROBI_NEIGHBOURHOODS.map((loc, idx) => {
+                const isSelected = selectedLocation.neighbourhood === loc.neighbourhood;
+                return (
+                  <button
+                    type="button"
+                    key={idx}
+                    onClick={() => setSelectedLocation(loc)}
+                    className={`min-h-20 p-4 rounded-xl border-2 text-left text-sm transition ${
+                      isSelected
+                        ? 'border-leaf bg-canopy/5 font-medium text-canopy'
+                        : 'border-black/10 hover:border-black/20 text-ink/70 bg-white'
+                    }`}
+                  >
+                    <div className="flex items-start gap-2">
+                      <MapPin className={`w-4 h-4 shrink-0 mt-0.5 ${isSelected ? 'text-leaf' : 'text-ink/40'}`} />
+                      <div>
+                        <div className="font-semibold">{loc.neighbourhood}</div>
+                        <div className="text-xs text-ink/50 font-normal mt-0.5">{loc.address}</div>
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
 
-          {/* Ambulance-only: dropoff destination */}
-          {serviceType === 'ambulance' && (
-            <div className="border-t border-amber-100 pt-3">
-              <label className="block text-xs font-semibold text-slate-600 mb-1">
-                Drop-off Destination (optional):
+            {/* Custom address */}
+            <div>
+              <label className="block text-sm font-medium text-ink/75 mb-2">
+                Building or flat number:
               </label>
               <input
                 type="text"
-                value={dropoffAddress}
-                onChange={(e) => setDropoffAddress(e.target.value)}
-                placeholder="e.g. Aga Khan Hospital, 3rd Parklands Ave"
-                className="w-full text-xs md:text-sm p-3 rounded-xl border border-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-slate-800 bg-amber-50/30"
+                value={customAddress}
+                onChange={(e) => setCustomAddress(e.target.value)}
+                placeholder="e.g. Green Valley Apts, Block B, Flat 4"
+                className="w-full text-sm p-4 rounded-xl border border-black/10 focus:outline-none focus:ring-2 focus:ring-leaf focus:border-leaf text-ink placeholder-ink/40 bg-white"
               />
-              <p className="text-[11px] text-slate-500 mt-1">Leave blank if you have not yet decided on a receiving facility.</p>
             </div>
-          )}
-        </div>
 
-        {/* Price & Guarantee Summary */}
-        <div className="bg-emerald-900 text-white rounded-2xl p-4 sm:p-5 shadow-lg flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="w-full space-y-1 text-center sm:text-left">
-            <div className="flex items-center gap-2 text-emerald-300 text-xs font-bold uppercase tracking-wider">
-              <ShieldCheck className="w-4 h-4" />
-              <span>M-Pesa Escrow Protection</span>
-            </div>
-            <p className="text-xs text-emerald-100">
-              {serviceType === 'ambulance' ? 'Emergency response fee: ' : 'Total consultation fee: '}
-              <strong className="text-lg text-white font-extrabold">{formatKES(priceConfig.basePriceKES)}</strong>
-            </p>
-            <p className="text-[11px] text-emerald-200/80">
-              {serviceType === 'ambulance'
-                ? `Target response: ${priceConfig.targetSLA} • Verified Emergency Response Fleet`
-                : `Target response: ${priceConfig.targetSLA} • Verified KMPDC Practitioner`}
-            </p>
+            {/* Ambulance-only: dropoff destination */}
+            {serviceType === 'ambulance' && (
+              <div className="space-y-2 p-4 rounded-xl bg-murram/5 border border-murram/20">
+                <label className="block text-sm font-medium text-ink/75">
+                  Hospital or clinic destination (optional):
+                </label>
+                <input
+                  type="text"
+                  value={dropoffAddress}
+                  onChange={(e) => setDropoffAddress(e.target.value)}
+                  placeholder="e.g. Aga Khan Hospital, 3rd Parklands Ave"
+                  className="w-full text-sm p-3 rounded-lg border border-murram/30 focus:outline-none focus:ring-2 focus:ring-murram focus:border-murram text-ink placeholder-ink/40 bg-white"
+                />
+                <p className="text-xs text-ink/50">Leave blank if you haven't decided yet.</p>
+              </div>
+            )}
           </div>
 
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className={`w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-extrabold text-sm shadow-md transition active:scale-95 cursor-pointer ${
+          {/* Summary & CTA */}
+          <div className="pt-6 border-t border-black/10 space-y-4">
+            <div className={`rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${
               serviceType === 'ambulance'
-                ? 'bg-amber-400 hover:bg-amber-300 text-slate-950'
-                : 'bg-emerald-400 hover:bg-emerald-300 text-emerald-950'
-            }`}
-          >
-            <span>
-              {isSubmitting
-                ? serviceType === 'ambulance'
-                  ? 'Dispatching Ambulance...'
-                  : 'Matching Doctor...'
-                : serviceType === 'ambulance'
-                ? 'Request Ambulance'
-                : 'Request Doctor Now'}
-            </span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
-        </div>
-      </form>
+                ? 'bg-murram/10 border border-murram/30'
+                : 'bg-canopy/5 border border-leaf/30'
+            }`}>
+              <div className="space-y-1">
+                <div className={`flex items-center gap-2 text-xs font-semibold uppercase tracking-wide ${
+                  serviceType === 'ambulance' ? 'text-murram' : 'text-leaf'
+                }`}>
+                  <ShieldCheck className="w-4 h-4" />
+                  <span>M-Pesa payment</span>
+                </div>
+                <p className="text-sm text-ink/75">
+                  Total cost:{' '}
+                  <span className={`font-display font-bold text-lg ${
+                    serviceType === 'ambulance' ? 'text-murram' : 'text-canopy'
+                  }`}>
+                    {formatKES(priceConfig.basePriceKES)}
+                  </span>
+                </p>
+              </div>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className={`min-h-11 w-full sm:w-auto px-6 py-3 rounded-xl font-semibold text-sm transition active:scale-95 ${
+                  serviceType === 'ambulance'
+                    ? 'bg-murram text-white hover:bg-murram/90'
+                    : 'bg-leaf text-white hover:bg-canopy'
+                }`}
+              >
+                {isSubmitting
+                  ? serviceType === 'ambulance'
+                    ? 'Dispatching...'
+                    : 'Matching doctor...'
+                  : serviceType === 'ambulance'
+                  ? 'Request Ambulance'
+                  : 'Find Doctor'}
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
 
 export default function PatientRequestPage() {
   return (
-    <Suspense fallback={<div className="text-center py-12 text-slate-500">Loading consultation triage...</div>}>
+    <Suspense fallback={<div className="text-center py-12 text-ink/50">Loading consultation triage...</div>}>
       <PatientRequestContent />
     </Suspense>
   );
