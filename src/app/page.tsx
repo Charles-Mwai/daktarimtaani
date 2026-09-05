@@ -163,24 +163,29 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-paper text-ink">
       {/* ---------------- Header ---------------- */}
-      <header className="flex flex-wrap items-center justify-between gap-y-3 px-4 sm:px-6 md:px-10 py-5 border-b border-black/[0.06]">
-        <div className="flex items-baseline gap-2">
-          <span className="font-display font-bold text-[22px] text-canopy">
-            Daktari Mtaani
-          </span>
-          <span className="w-[7px] h-[7px] rounded-full bg-murram mb-[3px]" />
+      <header className="px-4 sm:px-6 md:px-10 py-4 sm:py-5">
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div className="flex items-baseline gap-2">
+            <span className="font-display font-bold text-[22px] text-canopy">
+              Daktari Mtaani
+            </span>
+            <span className="w-[7px] h-[7px] rounded-full bg-murram mb-[3px]" />
+          </div>
+          <nav className="flex w-full sm:w-auto items-center gap-2 sm:gap-4 text-sm">
+            <Link
+              href="/patient/records"
+              className="min-h-11 flex-1 sm:flex-none inline-flex items-center justify-center rounded-lg bg-canopy/[0.06] sm:bg-transparent px-3 py-2.5 text-center font-medium text-canopy hover:bg-canopy/[0.1] sm:hover:bg-canopy/[0.06] transition-colors"
+            >
+              My medical records
+            </Link>
+            <Link
+              href="/patient/request"
+              className="min-h-11 flex-1 sm:flex-none inline-flex items-center justify-center bg-canopy text-white text-center font-medium px-4 py-2.5 rounded-lg hover:bg-leaf transition-colors"
+            >
+              Request a doctor
+            </Link>
+          </nav>
         </div>
-        <nav className="flex items-center gap-3 sm:gap-6 text-sm">
-          <Link href="/patient/records" className="text-ink/70 hover:text-canopy">
-            My medical records
-          </Link>
-          <Link
-            href="/patient/request"
-            className="min-h-11 bg-canopy text-white font-medium px-4 py-2.5 rounded-lg hover:bg-leaf transition-colors"
-          >
-            Request a doctor
-          </Link>
-        </nav>
       </header>
 
       {/* ---------------- Hero ---------------- */}
@@ -239,25 +244,25 @@ export default function HomePage() {
           M-Pesa.
         </p>
 
-        <div className="mt-9 grid lg:grid-cols-[1.15fr_1fr] gap-6">
+        <div className="mt-7 sm:mt-9 grid lg:grid-cols-[1.15fr_1fr] gap-4 sm:gap-6">
           {/* Teleconsult — primary */}
-          <div className="bg-canopy text-white rounded-2xl p-6 sm:p-8 flex flex-col">
-            <div className="flex items-center justify-between">
+          <div className="bg-canopy text-white rounded-[1.35rem] p-5 sm:p-8 flex flex-col shadow-[0_12px_30px_rgba(22,68,44,0.13)]">
+            <div className="flex items-center justify-between gap-4 border-b border-white/15 pb-4 sm:border-0 sm:pb-0">
               <span className="text-sm font-medium text-white/70">
                 Under 5 minutes
               </span>
-              <span className="font-display font-bold text-2xl">
+              <span className="font-display font-bold text-xl sm:text-2xl whitespace-nowrap">
                 KSh 1,000
               </span>
             </div>
-            <h3 className="font-display font-bold text-xl mt-5">
+            <h3 className="font-display font-bold text-xl mt-4 sm:mt-5">
               Video consultation
             </h3>
             <p className="mt-2 text-white/75 text-[15px] leading-relaxed">
               A licensed doctor, on camera, from wherever you are — no app
               download, no travel.
             </p>
-            <ul className="mt-6 space-y-2.5 flex-1">
+            <ul className="mt-5 sm:mt-6 space-y-3 flex-1">
               <li className="flex items-start gap-2.5">
                 <svg viewBox="0 0 20 20" className="w-[18px] h-[18px] mt-0.5 shrink-0 text-leaf" fill="none">
                   <circle cx="10" cy="10" r="9" stroke="currentColor" strokeWidth="1.4" />
@@ -282,37 +287,37 @@ export default function HomePage() {
             </ul>
             <Link
               href="/patient/request?service=teleconsult"
-              className="mt-7 bg-white text-canopy text-center font-semibold py-3 rounded-xl hover:bg-white/90 transition-colors"
+              className="mt-6 sm:mt-7 min-h-12 bg-white text-canopy text-center font-semibold py-3 rounded-xl hover:bg-white/90 transition-colors"
             >
               Start instant teleconsult
             </Link>
           </div>
 
           {/* Home visit — secondary */}
-          <div className="bg-white border border-black/[0.08] rounded-2xl p-6 sm:p-8 flex flex-col">
-            <div className="flex items-center justify-between">
+          <div className="bg-white border border-black/[0.08] rounded-[1.35rem] p-5 sm:p-8 flex flex-col shadow-[0_8px_24px_rgba(32,28,22,0.04)]">
+            <div className="flex items-center justify-between gap-4 border-b border-black/[0.07] pb-4 sm:border-0 sm:pb-0">
               <span className="text-sm font-medium text-ink/55">
                 Under 45 minutes
               </span>
-              <span className="font-display font-bold text-2xl text-canopy">
+              <span className="font-display font-bold text-xl sm:text-2xl text-canopy whitespace-nowrap">
                 KSh 2,500
               </span>
             </div>
-            <h3 className="font-display font-bold text-xl mt-5 text-canopy">
+            <h3 className="font-display font-bold text-xl mt-4 sm:mt-5 text-canopy">
               Home visit
             </h3>
             <p className="mt-2 text-ink/65 text-[15px] leading-relaxed">
               A doctor or clinical officer comes to your home or office for a
               proper physical exam.
             </p>
-            <ul className="mt-6 space-y-2.5 flex-1">
+            <ul className="mt-5 sm:mt-6 space-y-3 flex-1">
               <CheckRow>Vitals checked on-site — BP, glucose, pulse ox</CheckRow>
               <CheckRow>Live GPS tracking as the doctor makes their way to you</CheckRow>
               <CheckRow>Wound care, injections, and urgent paediatric checks</CheckRow>
             </ul>
             <Link
               href="/patient/request?service=home_visit"
-              className="mt-7 border border-canopy text-canopy text-center font-semibold py-3 rounded-xl hover:bg-canopy hover:text-white transition-colors"
+              className="mt-6 sm:mt-7 min-h-12 border border-canopy text-canopy text-center font-semibold py-3 rounded-xl hover:bg-canopy hover:text-white transition-colors"
             >
               Request a home visit
             </Link>
@@ -320,8 +325,8 @@ export default function HomePage() {
         </div>
 
         {/* Ambulance — urgent strip, not a third card */}
-        <div className="mt-6 rounded-2xl bg-murram/10 border border-murram/25 px-5 sm:px-7 py-5 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
-          <div className="flex items-center gap-3.5">
+        <div className="mt-4 sm:mt-6 rounded-[1.35rem] bg-murram/10 border border-murram/25 px-5 sm:px-7 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6">
+          <div className="flex items-start sm:items-center gap-3.5">
             <svg viewBox="0 0 40 40" className="w-9 h-9 shrink-0 text-murram" fill="none">
               <rect x="4" y="14" width="24" height="14" rx="2.5" stroke="currentColor" strokeWidth="2" />
               <path d="M28 19h6l4 5v4h-10v-9z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
@@ -338,6 +343,12 @@ export default function HomePage() {
               </p>
             </div>
           </div>
+          <Link
+            href="/patient/request?service=ambulance"
+            className="min-h-11 w-full sm:w-auto shrink-0 inline-flex items-center justify-center rounded-xl bg-murram px-5 py-3 text-center text-sm font-semibold text-white hover:bg-murram/90 transition-colors"
+          >
+            Request ambulance
+          </Link>
         </div>
       </section>
 
