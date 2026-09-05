@@ -207,6 +207,12 @@ export default function HomePage() {
             >
               Request a home visit
             </Link>
+            <Link
+              href="/patient/request?service=ambulance"
+              className="min-h-11 border border-murram bg-murram text-white text-center font-medium px-6 py-3.5 rounded-xl hover:bg-murram/90 transition-colors"
+            >
+              Request an ambulance
+            </Link>
           </div>
 
           <p className="mt-7 flex items-center gap-2 text-sm text-ink/60">
@@ -332,12 +338,6 @@ export default function HomePage() {
               </p>
             </div>
           </div>
-          <Link
-            href="/patient/request?service=ambulance"
-            className="min-h-11 sm:ml-auto shrink-0 bg-murram text-white font-semibold px-5 py-2.5 rounded-lg text-sm hover:bg-murram/90 transition-colors text-center"
-          >
-            Request an ambulance
-          </Link>
         </div>
       </section>
 
