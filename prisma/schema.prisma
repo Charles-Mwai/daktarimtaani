@@ -3,22 +3,23 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
-  id           String          @id @default(cuid())
-  phone        String          @unique
-  email        String?         @unique
+  id           String   @id @default(cuid())
+  phone        String   @unique
+  email        String?  @unique
   name         String
   passwordHash String?
-  role         String          @default("PATIENT") // PATIENT, DOCTOR, ADMIN
-  createdAt    DateTime        @default(now())
-  updatedAt    DateTime        @updatedAt
-  
-  patient      PatientProfile?
-  doctor       DoctorProfile?
+  role         String   @default("PATIENT") // PATIENT, DOCTOR, ADMIN
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  patient PatientProfile?
+  doctor  DoctorProfile?
 }
 
 model PatientProfile {
@@ -57,23 +58,23 @@ model DoctorProfile {
 }
 
 model MedicalRequest {
-  id                String            @id @default(cuid())
+  id                String             @id @default(cuid())
   patientId         String
   patientName       String
   patientPhone      String
-  serviceType       String            // teleconsult, home_visit, ambulance
+  serviceType       String // teleconsult, home_visit, ambulance
   symptomsSummary   String
-  symptomsTags      String            // JSON string array
-  severity          String            @default("mild") // mild, moderate, urgent
+  symptomsTags      String // JSON string array
+  severity          String             @default("mild") // mild, moderate, urgent
   neighbourhood     String
   address           String
   lat               Float
   lng               Float
-  estimatedPriceKES Int               @default(1000)
-  status            String            @default("matching") // matching, accepted, dispatching, in_transit, arrived, consulting, completed, cancelled
+  estimatedPriceKES Int                @default(1000)
+  status            String             @default("matching") // matching, accepted, dispatching, in_transit, arrived, consulting, completed, cancelled
   assignedDoctorId  String?
   currentOfferId    String?
-  createdAt         DateTime          @default(now())
+  createdAt         DateTime           @default(now())
   acceptedAt        DateTime?
   inTransitAt       DateTime?
   arrivedAt         DateTime?
@@ -101,53 +102,53 @@ model AmbulanceProvider {
 }
 
 model AmbulanceUnit {
-  id                 String             @id @default(cuid())
+  id                 String              @id @default(cuid())
   name               String
   driverName         String
   driverPhone        String?
   phone              String
-  registrationNo     String             @unique
-  vehicleType        String             @default("basic") // basic, advanced, icu, maternity
-  status             String             @default("available") // available, in_transit, offline, maintenance
-  verificationStatus String             @default("PENDING") // PENDING, VERIFIED, SUSPENDED
-  isOnline           Boolean            @default(true)
+  registrationNo     String              @unique
+  vehicleType        String              @default("basic") // basic, advanced, icu, maternity
+  status             String              @default("available") // available, in_transit, offline, maintenance
+  verificationStatus String              @default("PENDING") // PENDING, VERIFIED, SUSPENDED
+  isOnline           Boolean             @default(true)
   area               String
   neighbourhood      String
   lat                Float
   lng                Float
-  etaMinutes         Int                @default(15)
-  capacity           Int                @default(2)
+  etaMinutes         Int                 @default(15)
+  capacity           Int                 @default(2)
   providerId         String?
-  provider           AmbulanceProvider? @relation(fields: [providerId], references: [id])
-  createdAt          DateTime           @default(now())
-  updatedAt          DateTime           @updatedAt
+  provider           AmbulanceProvider?  @relation(fields: [providerId], references: [id])
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
   dispatches         AmbulanceDispatch[]
 }
 
 model AmbulanceDispatch {
-  id                      String        @id @default(cuid())
-  requestId               String        @unique
-  request                 MedicalRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
-  unitId                  String
-  unit                    AmbulanceUnit @relation(fields: [unitId], references: [id], onDelete: Cascade)
-  status                  String        @default("pending") // pending, assigned, en_route, arrived, completed, cancelled, declined
-  pickupAddress           String
-  dropoffAddress          String?
-  emergencyLevel          String        @default("urgent") // routine, urgent, critical
-  estimatedEtaMinutes     Int           @default(15)
+  id                    String         @id @default(cuid())
+  requestId             String         @unique
+  request               MedicalRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  unitId                String
+  unit                  AmbulanceUnit  @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  status                String         @default("pending") // pending, assigned, en_route, arrived, completed, cancelled, declined
+  pickupAddress         String
+  dropoffAddress        String?
+  emergencyLevel        String         @default("urgent") // routine, urgent, critical
+  estimatedEtaMinutes   Int            @default(15)
   // Offer lifecycle
-  offeredAt               DateTime?
-  offerExpiresAt          DateTime?
-  declinedAt              DateTime?
+  offeredAt             DateTime?
+  offerExpiresAt        DateTime?
+  declinedAt            DateTime?
   // Progress timestamps
-  assignedAt              DateTime      @default(now())
-  acceptedAt              DateTime?
-  arrivedAt               DateTime?
-  completedAt             DateTime?
+  assignedAt            DateTime       @default(now())
+  acceptedAt            DateTime?
+  arrivedAt             DateTime?
+  completedAt           DateTime?
   // Payout
-  ambulancePayoutKES      Int           @default(0)
-  ambulancePayoutStatus   String        @default("pending") // pending, paid
-  createdAt               DateTime      @default(now())
+  ambulancePayoutKES    Int            @default(0)
+  ambulancePayoutStatus String         @default("pending") // pending, paid
+  createdAt             DateTime       @default(now())
 }
 
 model DispatchOffer {
@@ -167,7 +168,7 @@ model ClinicalRecord {
   chiefComplaint     String
   vitalsNotes        String?
   clinicalImpression String
-  prescriptionsJson  String   // JSON string of PrescriptionItem[]
+  prescriptionsJson  String // JSON string of PrescriptionItem[]
   referralRequired   Boolean  @default(false)
   referralFacility   String?
   createdAt          DateTime @default(now())
